@@ -2,7 +2,6 @@
   "server": {
     "protocol": "https",
     "host": "dashboard.heroku.com/apps/desolate-plains-57618",
-    "callback": "/callback",
     "transport": "session",
     "state": true
   },
