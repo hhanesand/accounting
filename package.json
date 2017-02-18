@@ -23,5 +23,8 @@
     "eslint-plugin-promise": "^3.4.2",
     "eslint-plugin-standard": "^2.0.1",
     "standard": "^8.6.0"
+  },
+  "engines": {
+    "node": "7.x.x"
   }
 }
