@@ -46,7 +46,7 @@ client.connect(function (error) {
 // Timely
 require('./routes/timely.js')(app, client)
 
-app.listen(3000, function (error) {
+app.listen(process.env.PORT, function (error) {
   if (error) {
     console.log('Error setting up express app : ' + JSON.stringify(error))
   } else {
