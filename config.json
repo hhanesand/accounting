@@ -1,17 +1,34 @@
 {
-  "server": {
-    "protocol": "https",
-    "host": "dashboard.heroku.com/apps/desolate-plains-57618",
-    "transport": "session",
-    "state": true
+  "development": {
+    "server": {
+      "protocol": "http",
+      "host": "localhost:3000",
+      "transport": "session",
+      "state": true
+    },
+    "timely": {
+      "authorize_url": "https://api.timelyapp.com/1.0/oauth/authorize",
+      "access_url": "https://api.timelyapp.com/1.0/oauth/token",
+      "oauth": 2,
+      "key": "7c0f00859e8bfc144448d1a086783471028bb322a78bb478b7fc6609a43e6421",
+      "secret": "b8f9b801445d4e07d91169f7fff0b545ced973c33a7f4a62b440a935f9d00bbe",
+      "callback": "/timely_callback"
+    }
   },
-  "timely": {
-    "authorize_url": "https://api.timelyapp.com/1.0/oauth/authorize",
-    "access_url": "https://api.timelyapp.com/1.0/oauth/token",
-    "oauth": 2,
-    "key": "7c0f00859e8bfc144448d1a086783471028bb322a78bb478b7fc6609a43e6421",
-    "secret": "b8f9b801445d4e07d91169f7fff0b545ced973c33a7f4a62b440a935f9d00bbe",
-    "scope": [],
-    "callback": "/timely_callback"
+  "production": {
+    "server": {
+      "protocol": "https",
+      "host": "dashboard.heroku.com/apps/desolate-plains-57618",
+      "transport": "session",
+      "state": true
+    },
+    "timely": {
+      "authorize_url": "https://api.timelyapp.com/1.0/oauth/authorize",
+      "access_url": "https://api.timelyapp.com/1.0/oauth/token",
+      "oauth": 2,
+      "key": "7c0f00859e8bfc144448d1a086783471028bb322a78bb478b7fc6609a43e6421",
+      "secret": "b8f9b801445d4e07d91169f7fff0b545ced973c33a7f4a62b440a935f9d00bbe",
+      "callback": "/timely_callback"
+    }
   }
 }

@@ -2,6 +2,7 @@
   <configuration default="false" name="Accounting" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" path-to-js-file="app.js" working-dir="$PROJECT_DIR$">
     <envs>
       <env name="DEBUG" value="accounting:*" />
+      <env name="NODE_ENV" value="development" />
     </envs>
     <browser url="http://localhost:3000/" />
     <profiling v8-profiler-path="" />
