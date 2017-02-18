@@ -1,97 +1,55 @@
-const moment = require('moment')
-const request = require('request')
+'use strict'
 
 require('dotenv').load()
-const logger = require('morgan')
-const Grant = require('grant-express')
-const config = require('./config.json')
 
-const session = require('express-session')
-const pgDriver = require('connect-pg-simple')(session)
+const Sessions = require('express-session')
+const PGSessions = require('connect-pg-simple')(Sessions)
+const Grant = require('grant-express')
+const environment = process.env.NODE_ENV || 'development'
+const grant = new Grant(require('./config.json')[environment])
+
+var database = require('pg-connection-string').parse(process.env.DATABASE_URL + '?ssl=true')
+const pg = require('pg')
 
 const app = require('express')()
 
-const serverConnectionString = process.env.DATABASE_URL + '?ssl=true'
-
-app.use(logger('dev'))
-app.use(session({
-  store: new pgDriver({
-    conString: serverConnectionString
+app.use(Sessions({
+  store: new PGSessions({
+    pg: pg,
+    conString: process.env.DATABASE_URL + '?ssl=true'
   }),
   secret: process.env.COOKIE_SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {maxAge: 30 * 24 * 60 * 60 * 1000} // 30 days
 }))
-
-async function getHoursWorkedFromTimely (token) {
-
-}
-
-const grant = new Grant(config[process.env.NODE_ENV || 'development'])
-
-console.log(serverConnectionString)
-
 app.use(grant)
+app.use(require('morgan')('dev'))
 
-app.get('/timely_callback', function (req, res) {
-  req.session.timely = req.session.grant.response.access_token
-  const destination = req.session.return
-  delete req.session.return
+console.log('Creating table...')
 
-  if (destination != null) {
-    res.redirect(destination)
-  }
-})
-
-app.get('/hours', function (req, res) {
-  if (req.session.timely == null) {
-    req.session.return = '/hours'
-    res.redirect('/connect/timely')
+const client = new pg.Client(database)
+client.connect(function (error) {
+  if (error) {
+    console.log('error connecting to database ' + JSON.stringify(error))
   }
 
-  const options = {
-    'url': 'https://api.timelyapp.com/1.0/512361/reports',
-    'method': 'POST',
-    'json': true,
-    'auth': {
-      'bearer': req.session.timely
-    },
-    'body': {
-      'estimated': false
+  client.query('create table if not exists public.tokens ( "token" text, primary key ("token"));', function (error, result) {
+    if (error) {
+      console.log('error creating table ' + JSON.stringify(error))
+    } else {
+      console.log('Created table...')
     }
-  }
-
-  request(options, function (err, response, body) {
-    if (err) {
-      console.error('request failed : ' + err)
-      res.send('error : ' + err)
-      return
-    }
-
-    var total = 0
-
-    console.log(Object.keys(body))
-    console.log('is array ' + Array.isArray(body))
-
-    res.send(JSON.stringify(body))
-    return
-
-    if (body.length < 1) {
-      res.send('error data is not valid : ' + JSON.stringify(body))
-      return
-    }
-
-    body[0].projects.forEach(function (project) {
-      console.log(Object.keys(project))
-      console.log(project.project.name + ' : ' + project.logged_duration.formatted)
-      total += project.logged_duration.total_minutes
-    })
-
-    res.send(JSON.stringify({'minutes': total}))
   })
 })
 
-app.listen(3000, function () {
-  console.log('Express server listening on port ' + 3000)
+// Timely
+require('./routes/timely.js')(app, client)
+
+app.listen(3000, function (error) {
+  if (error) {
+    console.log('Error setting up express app : ' + JSON.stringify(error))
+  } else {
+    console.log('Listening...')
+  }
 })

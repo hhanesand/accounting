@@ -2,7 +2,6 @@
   <configuration default="false" name="Accounting" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" path-to-js-file="app.js" node-parameters="--harmony" working-dir="$PROJECT_DIR$">
     <envs>
       <env name="DEBUG" value="accounting:*" />
-      <env name="NODE_ENV" value="development" />
     </envs>
     <browser url="http://localhost:3000/" />
     <profiling v8-profiler-path="" />
@@ -33,6 +32,8 @@
     <EXTENSION ID="com.jetbrains.nodejs.run.NodeJSStartBrowserRunConfigurationExtension">
       <browser url="http://localhost:3000/" />
     </EXTENSION>
-    <method />
+    <method>
+      <option name="ToolBeforeRunTask" enabled="true" actionId="Tool_External Tools_Update DATABASE_URL from Heroku" />
+    </method>
   </configuration>
 </component>

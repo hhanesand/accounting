@@ -3,7 +3,6 @@
     "server": {
       "protocol": "http",
       "host": "localhost:3000",
-      "transport": "session",
       "state": true
     },
     "timely": {
@@ -19,7 +18,6 @@
     "server": {
       "protocol": "https",
       "host": "dashboard.heroku.com/apps/desolate-plains-57618",
-      "transport": "session",
       "state": true
     },
     "timely": {
