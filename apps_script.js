@@ -13,6 +13,10 @@ function copyFormatting (fromRange, toRange) {
 }
 
 function onOpen () {
+  updateTime()
+}
+
+function updateTime () {
   var response = UrlFetchApp.fetch('https://morning-dusk-92308.herokuapp.com/hours')
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet()
 
