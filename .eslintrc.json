@@ -9,6 +9,7 @@
   },
   "globals": {
     "UrlFetchApp": false,
-    "SpreadsheetApp": false
+    "SpreadsheetApp": false,
+    "Logger": false
   }
 }
