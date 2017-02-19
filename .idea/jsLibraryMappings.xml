@@ -2,7 +2,7 @@
 <project version="4">
   <component name="JavaScriptLibraryMappings">
     <file url="file://$PROJECT_DIR$" libraries="{accounting/node_modules}" />
-    <file url="PROJECT" libraries="{accounting/node_modules, google-apps-script-DefinitelyTyped}" />
+    <file url="PROJECT" libraries="{accounting/node_modules, google-apps-script-DefinitelyTyped, nodegit}" />
     <includedPredefinedLibrary name="Node.js Core" />
   </component>
 </project>

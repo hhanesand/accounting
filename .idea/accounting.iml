@@ -9,5 +9,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="google-apps-script-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="nodegit" level="project" />
   </component>
 </module>

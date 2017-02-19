@@ -6,15 +6,19 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "connect-pg-simple": "latest",
     "dotenv": "^4.0.0",
     "express": "~4.14.1",
-    "grant-express": "^3.7.0",
-    "morgan": "~1.8.1",
-    "pg": "^6.1.2",
-    "request": "latest",
     "express-session": "latest",
-    "connect-pg-simple": "latest",
-    "pg-connection-string": "latest"
+    "grant-express": "^3.7.0",
+    "moment": "^2.17.1",
+    "morgan": "~1.8.1",
+    "nodegit": "^0.17.0",
+    "pg": "^6.1.2",
+    "pg-connection-string": "latest",
+    "request": "latest",
+    "promise": "latest",
+    "simple-git": "latest"
   },
   "devDependencies": {
     "depcheck": "^0.6.7",
