@@ -28,13 +28,15 @@ app.use(require('morgan')('dev'))
 
 console.log('Creating table...')
 
+console.log()
+
 const client = new pg.Client(database)
 client.connect(function (error) {
   if (error) {
     console.log('error connecting to database ' + JSON.stringify(error))
   }
 
-  client.query('create table if not exists public.tokens ( "token" text, primary key ("token"));', function (error, result) {
+  client.query('create table if not exists public.tokens ("token" text, primary key ("token"));', function (error, result) {
     if (error) {
       console.log('error creating table ' + JSON.stringify(error))
     } else {
