@@ -65,9 +65,11 @@ getAllProjectPaths().forEach(function (path) {
       console.error(error)
     }
 
-    console.log(result)
+    var changes = result.split('\n').map(function (line) {
+      return ' - ' + line.slice(1, -1) + '\n'
+    }).join('')
 
-    var string = '\n# Changes for ' + path + '\n' + result
+    var string = '\n### Changes for ' + path + '\n' + changes
 
     fs.appendFile('./changelog.md', string, function (err) {
       if (err) {
