@@ -7,6 +7,13 @@
 const git = require('simple-git')
 const fs = require('fs')
 const moment = require('moment')
+const Promise = require('promise')
+
+/* eslint-disable no-extend-native */
+String.prototype.capitalizeFirstLetter = function () {
+  return this.charAt(0).toUpperCase() + this.slice(1)
+}
+/* eslint-enable no-extend-native */
 
 var developmentDirectory = process.env.HOME + '/Documents/Developer'
 
@@ -46,35 +53,47 @@ function getAllProjectPaths () {
   return results
 }
 
-getAllProjectPaths().forEach(function (path) {
-  var currentMonth = moment().startOf('month').toISOString()
+function getChangesFromPath (path) {
+  return new Promise(function (resolve, reject) {
+    const currentMonth = moment().subtract(1, 'month').startOf('month').toISOString()
 
-  git(path).raw([
-    'log',
-    '--branches=*',
-    '--since=' + currentMonth,
-    '--date=local',
-    '--pretty=format:"%h%x09%an%x09%ad%x09%s"'
-  ], function (error, result) {
-    if (result == null) {
-      console.log('no changes for ' + path)
-      return
-    }
-
-    if (error) {
-      console.error(error)
-    }
-
-    var changes = result.split('\n').map(function (line) {
-      return ' - ' + line.slice(1, -1) + '\n'
-    }).join('')
-
-    var string = '\n### Changes for ' + path + '\n' + changes
-
-    fs.appendFile('./changelog.md', string, function (err) {
-      if (err) {
-        return console.log(err)
+    git(path).raw([
+      'log',
+      '--branches=*',
+      '--since=' + currentMonth,
+      '--date=short',
+      '--author=Hakon Hanesand',
+      '--pretty=format:"%h %ad \t%s"'
+    ], function (error, result) {
+      if (error) {
+        console.error(error)
+        reject(error)
+        return
       }
+
+      const repoName = path.substring(path.lastIndexOf('/') + 1, path.length)
+
+      if (result == null) {
+        resolve('\n### No changes for ' + repoName + '\n')
+        return
+      }
+
+      const changes = result.split('\n').map(function (line) {
+        return ' - ' + line.slice(1, -1) + '\n'
+      }).join('')
+
+      resolve('\n### Changes for ' + repoName + '\n' + changes)
     })
   })
+}
+
+Promise.all(getAllProjectPaths().map(function (path) {
+  return getChangesFromPath(path)
+})).then(function (changes) {
+  const file = changes.join('').slice(1)
+
+  fs.unlinkSync('./changelog.md')
+  fs.appendFileSync('./changelog.md', file)
+}, function (error) {
+  console.log(error)
 })
